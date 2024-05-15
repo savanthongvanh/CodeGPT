@@ -9,22 +9,21 @@ import com.intellij.ui.components.ActionLink
 import com.intellij.ui.components.JBLabel
 import com.intellij.util.ui.FormBuilder
 import ee.carlrobert.codegpt.CodeGPTBundle
-import ee.carlrobert.codegpt.settings.GeneralSettings
-import ee.carlrobert.codegpt.settings.service.codegpt.CodeGPTServiceConfigurable
 import ee.carlrobert.codegpt.settings.service.codegpt.CodeGPTServiceForm
-import ee.carlrobert.codegpt.settings.service.custom.CustomServiceConfigurable
-import ee.carlrobert.codegpt.settings.service.google.GoogleSettingsConfigurable
-import ee.carlrobert.codegpt.settings.service.ollama.OllamaSettingsConfigurable
 import javax.swing.JPanel
 
 class ServiceConfigurableComponent {
 
     var form: CodeGPTServiceForm = CodeGPTServiceForm()
 
+//    private var serviceComboBox: ComboBox<ServiceType> =
+//        ComboBox(EnumComboBoxModel(ServiceType::class.java)).apply {
+//            selectedItem = service<GeneralSettings>().state.selectedService
+//        }
+
+
     private var serviceComboBox: ComboBox<ServiceType> =
-        ComboBox(EnumComboBoxModel(ServiceType::class.java)).apply {
-            selectedItem = service<GeneralSettings>().state.selectedService
-        }
+            ComboBox(arrayOf(ServiceType.OPENAI))
 
     fun getSelectedService(): ServiceType {
         return serviceComboBox.selectedItem as ServiceType
@@ -66,6 +65,7 @@ class ServiceConfigurableComponent {
                 val context = service<DataManager>().getDataContext(it.source as ActionLink)
                 val settings = Settings.KEY.getData(context)
                 settings?.select(settings.find(configurableClass))
+
             })
         }
     }
